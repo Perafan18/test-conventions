@@ -40,9 +40,11 @@ Activate this skill when the agent is writing, editing, or discussing test files
    - Avoid `->only()`, `->pause()`, `sleep()` in tests
 5. **After writing tests**, suggest running:
    ```
-   vendor/bin/pint --test tests/path/to/new/test.php
+   vendor/bin/php-cs-fixer fix --dry-run tests/path/to/new/test.php
    ```
-   to verify against the linter. For autofixable violations (`should ` prefix, `toBe(true)`, `->only()`, `test()` top-level), run `vendor/bin/pint` (without `--test`) to apply fixes automatically.
+   to verify against the linter. For autofixable violations (`should ` prefix, `toBe(true)`, `->only()`, top-level `test('...')`), run `vendor/bin/php-cs-fixer fix` (without `--dry-run`) to apply fixes automatically.
+
+   > Note: even though the rules are PHP-CS-Fixer custom fixers, Pint v1.27 does not auto-discover them from `pint.json`. The client project uses a `.php-cs-fixer.dist.php` config registering the fixers explicitly. Pint stays in charge of the Laravel preset; PHP-CS-Fixer handles these test-convention rules.
 
 ## What NOT to do
 
@@ -56,16 +58,17 @@ Activate this skill when the agent is writing, editing, or discussing test files
 If the user asks for behavior the conventions don't address:
 
 - Propose updating `CONVENTIONS.md` via PR to `perafan/test-conventions`.
-- Document the exception inline (this is one of the few cases where a comment in a test is valid, depending on the project's `partial_mock_comment_policy` setting in `pint.json`).
+- Document the exception inline (this is one of the few cases where a comment in a test is valid, depending on the project's `partial_mock_comment_policy` setting in `.php-cs-fixer.dist.php`).
 - Do not improvise silently.
 
 ## Configuration awareness
 
-The project's `pint.json` may configure rule-specific options. Common overrides to check:
+The project's `.php-cs-fixer.dist.php` may configure rule-specific options. Common overrides to check:
 
 - `Perafan/test_conventions_max_description_length` — may differ from default 50
 - `Perafan/test_conventions_partial_mock_comment.policy` — `forbid` / `require` / `allow` (legitimate disagreement between projects)
-- Rules disabled (set to `false`) — respect what the project chose to skip
+- Rules disabled (omitted from the `setRules` array, or set to `false`) — respect what the project chose to skip
+- `Finder` allowlists (`notPath()`) — pre-existing violations that have not yet been fixed; do not introduce new code into those files that breaks the rule
 
 Read this config before writing tests in a project, especially when you're new to it.
 

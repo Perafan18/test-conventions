@@ -6,6 +6,39 @@ Formato basado en [Keep a Changelog](https://keepachangelog.com/en/1.1.0/) y [Se
 
 ## [Unreleased]
 
+## [1.0.0] - 2026-05-19
+
+### Stable release
+
+The package is now adopted by two real client projects, validating the
+architecture end-to-end:
+
+- 11 mechanized fixers covering R01-R11 + the §5.3 `partial_mock_comment_policy`.
+- The config policy resolves the §5.3 conflict between projects without
+  forking the canonical doc.
+- R10 and R12 documented as code-review-only — their patterns are
+  inviable cleanly on Tokens; if real pain emerges in review, a future
+  release implements them with ScopeTracker.
+
+Clients adopt via `.php-cs-fixer.dist.php` (Pint v1.27 does not yet
+auto-discover third-party custom fixers from `pint.json`; the package
+distributes PHP-CS-Fixer custom fixers, clients register them explicitly).
+
+### SKILL.md polished
+
+- Suggested command updated from `vendor/bin/pint --test` to
+  `vendor/bin/php-cs-fixer fix --dry-run`.
+- Configuration awareness section now points at `.php-cs-fixer.dist.php`
+  with a note about `notPath()` allowlists (pre-existing violations).
+
+## [0.3.1] - 2026-05-19
+
+### Fixed
+
+- R01 no longer renames Pest's `test()` helper (the no-arg form returning
+  the current TestCase). The fixer now requires the first meaningful
+  token inside the parens to be a string literal.
+
 ## [0.3.0] - 2026-05-19
 
 ### Added — 7 fixers nuevos (paquete completo)
