@@ -31,6 +31,20 @@ it('leaves function definitions unchanged', function () {
         ->toContain('function test(');
 });
 
+it('leaves pest test() helper calls unchanged', function () {
+    $code = "<?php\n\ntest()->actingAs(\$user);\n";
+
+    expect(applyFixer($this->fixer, $code))
+        ->toContain('test()->actingAs');
+});
+
+it('leaves test() with non-string first arg', function () {
+    $code = "<?php\n\ntest(\$variable, function () {});\n";
+
+    expect(applyFixer($this->fixer, $code))
+        ->toContain('test($variable');
+});
+
 it('respects allow_in_files for arch tests', function () {
     $this->fixer->configure(['allow_in_files' => ['ArchTest.php']]);
     $code = "<?php\n\ntest('arch check', function () {});\n";

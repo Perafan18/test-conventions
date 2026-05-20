@@ -77,6 +77,11 @@ final class ItNotTestFixer extends AbstractTestConventionsFixer implements Confi
                 continue;
             }
 
+            $firstArg = $tokens->getNextMeaningfulToken($next);
+            if ($firstArg === null || ! $tokens[$firstArg]->isGivenKind(T_CONSTANT_ENCAPSED_STRING)) {
+                continue;
+            }
+
             $tokens[$index] = new Token([T_STRING, 'it']);
         }
     }
