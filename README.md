@@ -36,46 +36,60 @@ No usar todavia en produccion.
 composer require --dev perafan/test-conventions
 ```
 
-Editar `pint.json` agregando nuestras rules:
+Crear `.php-cs-fixer.dist.php` en la raiz del proyecto:
 
-```json
-{
-    "preset": "laravel",
-    "rules": {
-        "Perafan/test_conventions_max_description_length": true,
-        "Perafan/test_conventions_no_should_prefix": true,
-        "Perafan/test_conventions_forbidden_matchers": true,
-        "Perafan/test_conventions_no_app_mocking": true,
-        "Perafan/test_conventions_it_not_test": true,
-        "Perafan/test_conventions_no_assert_true_true": true,
-        "Perafan/test_conventions_no_pause_browser": true,
-        "Perafan/test_conventions_no_sleep": true,
-        "Perafan/test_conventions_no_only": true,
-        "Perafan/test_conventions_no_absolute_paths": true,
-        "Perafan/test_conventions_partial_mock_comment": {
-            "policy": "forbid"
-        }
-    }
-}
+```php
+<?php
+
+use PhpCsFixer\Config;
+use PhpCsFixer\Finder;
+use Perafan\TestConventions\Fixers\ForbiddenMatchersFixer;
+use Perafan\TestConventions\Fixers\MaxDescriptionLengthFixer;
+use Perafan\TestConventions\Fixers\NoAppMockingFixer;
+use Perafan\TestConventions\Fixers\NoShouldPrefixFixer;
+
+return (new Config())
+    ->setRiskyAllowed(false)
+    ->registerCustomFixers([
+        new MaxDescriptionLengthFixer(),
+        new NoShouldPrefixFixer(),
+        new ForbiddenMatchersFixer(),
+        new NoAppMockingFixer(),
+    ])
+    ->setRules([
+        'Perafan/test_conventions_max_description_length' => true,
+        'Perafan/test_conventions_no_should_prefix' => true,
+        'Perafan/test_conventions_forbidden_matchers' => true,
+        'Perafan/test_conventions_no_app_mocking' => true,
+    ])
+    ->setFinder(
+        (new Finder())->in([__DIR__.'/tests'])
+    );
 ```
 
-`templates/pint.json` tiene una version copiable.
+> **Por que `.php-cs-fixer.dist.php` y no `pint.json`?** Pint v1.27 no descubre custom fixers de terceros desde `pint.json`. PHP-CS-Fixer directo si lo hace via `registerCustomFixers()`. El cliente sigue usando Pint para el resto de su config (preset Laravel + built-ins); este config aplica solo a nuestras rules. Detalle en CONVENTIONS.md.
 
 ## Uso
 
 ### CI
 
-El cliente ya tiene un step Pint en CI. Las rules aplican automaticamente:
+Agregar al workflow GitHub Actions:
 
 ```yaml
-- run: vendor/bin/pint --test
+- run: vendor/bin/php-cs-fixer fix --dry-run -vvv
 ```
 
-Sin nuevo workflow, sin nuevo binario.
+(Sigue corriendo `vendor/bin/pint --test` para el resto de la config.)
 
-### Pre-commit (lefthook con Pint hook)
+### Autofix local
 
-Si el cliente tiene Pint hook en `lefthook.yml`, **ya esta**:
+```bash
+vendor/bin/php-cs-fixer fix
+```
+
+Aplica fixes automaticos: `should ` strip, `toBe(true)` → `toBeTrue()`, etc.
+
+### Pre-commit (lefthook)
 
 ```yaml
 pre-commit:
@@ -83,6 +97,9 @@ pre-commit:
     pint:
       glob: "*.php"
       run: vendor/bin/pint --test {staged_files}
+    test-conventions:
+      glob: "tests/**/*.php"
+      run: vendor/bin/php-cs-fixer fix --dry-run {staged_files}
 ```
 
 ### Autofix local
