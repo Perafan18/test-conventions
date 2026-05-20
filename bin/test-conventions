@@ -1,0 +1,25 @@
+#!/usr/bin/env php
+<?php
+
+declare(strict_types=1);
+
+$autoloadCandidates = [
+    __DIR__.'/../vendor/autoload.php',
+    __DIR__.'/../../../autoload.php',
+];
+
+$autoloadLoaded = false;
+foreach ($autoloadCandidates as $candidate) {
+    if (file_exists($candidate)) {
+        require $candidate;
+        $autoloadLoaded = true;
+        break;
+    }
+}
+
+if (! $autoloadLoaded) {
+    fwrite(STDERR, "Autoload not found. Run `composer install`.\n");
+    exit(1);
+}
+
+(new Perafan\TestConventions\Cli\Application())->run();

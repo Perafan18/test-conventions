@@ -72,11 +72,8 @@ final class MaxDescriptionLengthFixer extends AbstractTestConventionsFixer imple
 
             $line = $this->lineFor($tokens, $call->firstStringArgIndex);
 
-            throw new RuntimeException(sprintf(
-                '%s:%d: %s Description exceeds %d chars (got %d): "%s"',
-                $file->getPathname(),
-                $line,
-                $this->getName(),
+            $this->report($file, $line, sprintf(
+                'Description exceeds %d chars (got %d): "%s"',
                 $limit,
                 $length,
                 $call->firstStringValue,

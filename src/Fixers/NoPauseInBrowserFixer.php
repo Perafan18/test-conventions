@@ -66,15 +66,14 @@ final class NoPauseInBrowserFixer extends AbstractTestConventionsFixer implement
 
         $code = $tokens->generateCode();
 
-        if (preg_match('/->(pause|wait)\s*\(\s*\d+/', $code, $matches, PREG_OFFSET_CAPTURE)) {
-            $line = substr_count(substr($code, 0, $matches[0][1]), "\n") + 1;
-            throw new RuntimeException(sprintf(
-                '%s:%d: %s `%s` with fixed timeout is forbidden — use semantic wait.',
-                $pathname,
-                $line,
-                $this->getName(),
-                trim($matches[0][0]),
-            ));
+        if (preg_match_all('/->(pause|wait)\s*\(\s*\d+/', $code, $matches, PREG_OFFSET_CAPTURE)) {
+            foreach ($matches[0] as $match) {
+                $line = substr_count(substr($code, 0, $match[1]), "\n") + 1;
+                $this->report($file, $line, sprintf(
+                    '`%s` with fixed timeout is forbidden — use semantic wait.',
+                    trim($match[0]),
+                ));
+            }
         }
     }
 }

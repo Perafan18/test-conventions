@@ -35,24 +35,18 @@ final class NoAssertTrueTrueFixer extends AbstractTestConventionsFixer
     {
         $code = $tokens->generateCode();
 
-        if (preg_match('/(?<!->|::)\bassertTrue\s*\(\s*true\s*\)/', $code, $matches, PREG_OFFSET_CAPTURE)) {
-            $line = substr_count(substr($code, 0, $matches[0][1]), "\n") + 1;
-            throw new RuntimeException(sprintf(
-                '%s:%d: %s Placeholder assertion `assertTrue(true)` is forbidden — write a real assertion.',
-                $file->getPathname(),
-                $line,
-                $this->getName(),
-            ));
+        if (preg_match_all('/(?<!->|::)\bassertTrue\s*\(\s*true\s*\)/', $code, $matches, PREG_OFFSET_CAPTURE)) {
+            foreach ($matches[0] as $match) {
+                $line = substr_count(substr($code, 0, $match[1]), "\n") + 1;
+                $this->report($file, $line, 'Placeholder assertion `assertTrue(true)` is forbidden — write a real assertion.');
+            }
         }
 
-        if (preg_match('/expect\s*\(\s*true\s*\)\s*->\s*toBeTrue\s*\(\s*\)/', $code, $matches, PREG_OFFSET_CAPTURE)) {
-            $line = substr_count(substr($code, 0, $matches[0][1]), "\n") + 1;
-            throw new RuntimeException(sprintf(
-                '%s:%d: %s Placeholder assertion `expect(true)->toBeTrue()` is forbidden — write a real assertion.',
-                $file->getPathname(),
-                $line,
-                $this->getName(),
-            ));
+        if (preg_match_all('/expect\s*\(\s*true\s*\)\s*->\s*toBeTrue\s*\(\s*\)/', $code, $matches, PREG_OFFSET_CAPTURE)) {
+            foreach ($matches[0] as $match) {
+                $line = substr_count(substr($code, 0, $match[1]), "\n") + 1;
+                $this->report($file, $line, 'Placeholder assertion `expect(true)->toBeTrue()` is forbidden — write a real assertion.');
+            }
         }
     }
 }

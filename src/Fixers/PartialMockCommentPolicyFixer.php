@@ -78,21 +78,11 @@ final class PartialMockCommentPolicyFixer extends AbstractTestConventionsFixer i
             $hasComment = $this->hasCommentImmediatelyAbove($tokens, $index);
 
             if ($policy === self::POLICY_FORBID && $hasComment) {
-                throw new RuntimeException(sprintf(
-                    '%s:%d: %s Inline comment above partialMock() is forbidden by project policy. Extract an explicit Fake class instead.',
-                    $file->getPathname(),
-                    $this->lineFor($tokens, $index),
-                    $this->getName(),
-                ));
+                $this->report($file, $this->lineFor($tokens, $index), 'Inline comment above partialMock() is forbidden by project policy. Extract an explicit Fake class instead.');
             }
 
             if ($policy === self::POLICY_REQUIRE && ! $hasComment) {
-                throw new RuntimeException(sprintf(
-                    '%s:%d: %s Inline comment above partialMock() is required — document the reason.',
-                    $file->getPathname(),
-                    $this->lineFor($tokens, $index),
-                    $this->getName(),
-                ));
+                $this->report($file, $this->lineFor($tokens, $index), 'Inline comment above partialMock() is required — document the reason.');
             }
         }
     }

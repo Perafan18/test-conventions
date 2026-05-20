@@ -36,4 +36,26 @@ abstract class AbstractTestConventionsFixer extends AbstractFixer
 
         return $line;
     }
+
+    protected function report(\SplFileInfo $file, int $line, string $message): void
+    {
+        if (\Perafan\TestConventions\Cli\ViolationCollector::path() !== null) {
+            \Perafan\TestConventions\Cli\ViolationCollector::add(
+                $file->getPathname(),
+                $line,
+                $this->getName(),
+                $message,
+            );
+
+            return;
+        }
+
+        throw new \RuntimeException(sprintf(
+            '%s:%d: %s %s',
+            $file->getPathname(),
+            $line,
+            $this->getName(),
+            $message,
+        ));
+    }
 }

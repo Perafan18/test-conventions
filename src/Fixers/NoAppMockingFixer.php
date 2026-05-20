@@ -95,14 +95,12 @@ final class NoAppMockingFixer extends AbstractTestConventionsFixer implements Co
 
             foreach ($this->configuration['namespaces'] as $forbidden) {
                 if (str_starts_with($fqn, $forbidden)) {
-                    throw new RuntimeException(sprintf(
-                        '%s:%d: %s Cannot mock %s — class is in forbidden namespace "%s".',
-                        $file->getPathname(),
-                        $this->lineFor($tokens, $index),
-                        $this->getName(),
+                    $this->report($file, $this->lineFor($tokens, $index), sprintf(
+                        'Cannot mock %s — class is in forbidden namespace "%s".',
                         $fqn,
                         $forbidden,
                     ));
+                    break;
                 }
             }
         }

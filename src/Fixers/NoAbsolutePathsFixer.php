@@ -61,13 +61,11 @@ final class NoAbsolutePathsFixer extends AbstractTestConventionsFixer implements
                     continue;
                 }
 
-                throw new RuntimeException(sprintf(
-                    '%s:%d: %s Absolute path forbidden: "%s" — use base_path()/storage_path()/Storage::fake().',
-                    $file->getPathname(),
-                    $this->lineFor($tokens, $index),
-                    $this->getName(),
+                $this->report($file, $this->lineFor($tokens, $index), sprintf(
+                    'Absolute path forbidden: "%s" — use base_path()/storage_path()/Storage::fake().',
                     $literal,
                 ));
+                break;
             }
         }
     }

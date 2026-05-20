@@ -40,11 +40,11 @@ Activate this skill when the agent is writing, editing, or discussing test files
    - Avoid `->only()`, `->pause()`, `sleep()` in tests
 5. **After writing tests**, suggest running:
    ```
-   vendor/bin/php-cs-fixer fix --dry-run tests/path/to/new/test.php
+   vendor/bin/test-conventions check tests/path/to/new/test.php
    ```
-   to verify against the linter. For autofixable violations (`should ` prefix, `toBe(true)`, `->only()`, top-level `test('...')`), run `vendor/bin/php-cs-fixer fix` (without `--dry-run`) to apply fixes automatically.
+   to verify against the linter. For autofixable violations (`should ` prefix, `toBe(true)`, `->only()`, top-level `test('...')`), run `vendor/bin/test-conventions fix` to apply fixes automatically.
 
-   > Note: even though the rules are PHP-CS-Fixer custom fixers, Pint v1.27 does not auto-discover them from `pint.json`. The client project uses a `.php-cs-fixer.dist.php` config registering the fixers explicitly. Pint stays in charge of the Laravel preset; PHP-CS-Fixer handles these test-convention rules.
+   > Note: the package distributes PHP-CS-Fixer custom fixers but exposes them through the `test-conventions` binary so the client never sees `php-cs-fixer` plumbing. Pint v1.27 does not auto-discover third-party custom fixers; the binary works around that internally.
 
 ## What NOT to do
 

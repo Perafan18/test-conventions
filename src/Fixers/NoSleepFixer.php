@@ -58,11 +58,8 @@ final class NoSleepFixer extends AbstractTestConventionsFixer
                 continue;
             }
 
-            throw new RuntimeException(sprintf(
-                '%s:%d: %s `%s()` is forbidden in tests — use `Carbon::setTestNow()` or semantic waits.',
-                $file->getPathname(),
-                $this->lineFor($tokens, $index),
-                $this->getName(),
+            $this->report($file, $this->lineFor($tokens, $index), sprintf(
+                '`%s()` is forbidden in tests — use `Carbon::setTestNow()` or semantic waits.',
                 $token->getContent(),
             ));
         }

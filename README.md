@@ -30,64 +30,50 @@ No usar todavia en produccion.
 
 ## Instalacion
 
-> Disponible cuando se libere `v0.1.0`.
-
 ```bash
 composer require --dev perafan/test-conventions
+vendor/bin/test-conventions init
 ```
 
-Crear `.php-cs-fixer.dist.php` en la raiz del proyecto:
+`init` genera dos archivos:
 
-```php
-<?php
+- **`.php-cs-fixer.dist.php`** — una linea que delega al config del vendor. Permite que plugins PHP-CS-Fixer de editores (PhpStorm, VSCode) den feedback inline gratis.
+- **`test-conventions.php`** — overrides opcionales (paths, allowlist, `partial_mock_comment_policy`, etc.).
 
-use PhpCsFixer\Config;
-use PhpCsFixer\Finder;
-use Perafan\TestConventions\Fixers\ForbiddenMatchersFixer;
-use Perafan\TestConventions\Fixers\MaxDescriptionLengthFixer;
-use Perafan\TestConventions\Fixers\NoAppMockingFixer;
-use Perafan\TestConventions\Fixers\NoShouldPrefixFixer;
-
-return (new Config())
-    ->setRiskyAllowed(false)
-    ->registerCustomFixers([
-        new MaxDescriptionLengthFixer(),
-        new NoShouldPrefixFixer(),
-        new ForbiddenMatchersFixer(),
-        new NoAppMockingFixer(),
-    ])
-    ->setRules([
-        'Perafan/test_conventions_max_description_length' => true,
-        'Perafan/test_conventions_no_should_prefix' => true,
-        'Perafan/test_conventions_forbidden_matchers' => true,
-        'Perafan/test_conventions_no_app_mocking' => true,
-    ])
-    ->setFinder(
-        (new Finder())->in([__DIR__.'/tests'])
-    );
-```
-
-> **Por que `.php-cs-fixer.dist.php` y no `pint.json`?** Pint v1.27 no descubre custom fixers de terceros desde `pint.json`. PHP-CS-Fixer directo si lo hace via `registerCustomFixers()`. El cliente sigue usando Pint para el resto de su config (preset Laravel + built-ins); este config aplica solo a nuestras rules. Detalle en CONVENTIONS.md.
+Listo. No hay que copiar boilerplate ni mantener una config larga del paquete — vive dentro del vendor.
 
 ## Uso
 
+### Comandos
+
+| Comando | Hace |
+|---|---|
+| `vendor/bin/test-conventions check` | Reporta violaciones sin modificar archivos. Exit 1 si encuentra alguna |
+| `vendor/bin/test-conventions fix` | Aplica autofixes (`should ` → strip, `toBe(true)` → `toBeTrue()`, etc.) |
+| `vendor/bin/test-conventions list-rules` | Tabla de las 11 reglas con seccion del doc y modo (autofix/detect) |
+| `vendor/bin/test-conventions init` | Bootstrap (genera los dos archivos del cliente) |
+
+Output ejemplo:
+
+```
+$ vendor/bin/test-conventions check
+tests/Feature/UserTest.php:14: Perafan/test_conventions_max_description_length Description exceeds 50 chars (got 67): "..."
+tests/Unit/PostTest.php:8: Perafan/test_conventions_forbidden_matchers Use toBeTrue() instead of toBe(true)
+
+1 file has autofixable violations. Run `vendor/bin/test-conventions fix` to apply.
+Found 2 violations across 2 files.
+```
+
+Formato `file:line: rule: message` clickable en editores y terminales modernas.
+
 ### CI
 
-Agregar al workflow GitHub Actions:
-
 ```yaml
-- run: vendor/bin/php-cs-fixer fix --dry-run -vvv
+- run: vendor/bin/pint --test
+- run: vendor/bin/test-conventions check
 ```
 
-(Sigue corriendo `vendor/bin/pint --test` para el resto de la config.)
-
-### Autofix local
-
-```bash
-vendor/bin/php-cs-fixer fix
-```
-
-Aplica fixes automaticos: `should ` strip, `toBe(true)` → `toBeTrue()`, etc.
+Pint sigue manejando el preset Laravel + built-ins. `test-conventions` se encarga solo de las reglas de tests.
 
 ### Pre-commit (lefthook)
 
@@ -99,7 +85,7 @@ pre-commit:
       run: vendor/bin/pint --test {staged_files}
     test-conventions:
       glob: "tests/**/*.php"
-      run: vendor/bin/php-cs-fixer fix --dry-run {staged_files}
+      run: vendor/bin/test-conventions check {staged_files}
 ```
 
 ### Fixes automaticos disponibles
@@ -109,11 +95,15 @@ pre-commit:
 | `no_should_prefix` | strip `should `, `it tests `, `tests that ` |
 | `forbidden_matchers` | `toBe(true)` → `toBeTrue()`, `toBe(false)` → `toBeFalse()`, `toBe(null)` → `toBeNull()` |
 | `no_only` | strip `->only()` |
-| `it_not_test` | rename `test(...)` → `it(...)` |
+| `it_not_test` | rename `test(...)` → `it(...)` (excepto en arch tests) |
 
 ### Editor inline
 
-PhpStorm con plugin PHP-CS-Fixer y VSCode con extension PHP-CS-Fixer leen los mismos fixers y los muestran inline. Gratis.
+El `.php-cs-fixer.dist.php` que `init` genera delega al config del vendor, asi que plugins PHP-CS-Fixer de PhpStorm y VSCode muestran los errores inline. Gratis, sin configuracion extra.
+
+### Por que no `pint.json`
+
+Pint v1.27 no descubre custom fixers de terceros desde `pint.json`. Probado empiricamente — falla con "unknown fixers". El binario `vendor/bin/test-conventions` resuelve esto: internamente invoca PHP-CS-Fixer con la config completa registrada, asi el cliente no ve la mecanica. Si Pint upstream agrega soporte algun dia, `init` puede generar un `pint.json` en su lugar.
 
 ## Doc canonico
 
