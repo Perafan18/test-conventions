@@ -102,9 +102,7 @@ pre-commit:
       run: vendor/bin/php-cs-fixer fix --dry-run {staged_files}
 ```
 
-### Autofix local
-
-`vendor/bin/pint` (sin `--test`) aplica fixes automaticos a las reglas autofixables:
+### Fixes automaticos disponibles
 
 | Regla | Autofix |
 |---|---|
@@ -148,7 +146,7 @@ R10 y R12 quedan a code review humano/agente porque requieren scope tracking sob
 /plugin install test-conventions
 ```
 
-El skill carga `CONVENTIONS.md` en context cuando un agente esta escribiendo tests Pest en un proyecto que tiene `perafan/test-conventions` instalado. Sugiere correr `vendor/bin/pint --test` al terminar.
+El skill carga `CONVENTIONS.md` en context cuando un agente esta escribiendo tests Pest en un proyecto que tiene `perafan/test-conventions` instalado. Sugiere correr `vendor/bin/php-cs-fixer fix --dry-run` al terminar.
 
 ## Roadmap
 

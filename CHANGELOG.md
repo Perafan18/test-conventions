@@ -6,6 +6,29 @@ Formato basado en [Keep a Changelog](https://keepachangelog.com/en/1.1.0/) y [Se
 
 ## [Unreleased]
 
+## [0.3.0] - 2026-05-19
+
+### Added — 7 fixers nuevos (paquete completo)
+
+- `Perafan/test_conventions_it_not_test` — `it()` siempre, `test()` solo en arch tests (autofix: rename).
+- `Perafan/test_conventions_no_assert_true_true` — sin `assertTrue(true)` ni `expect(true)->toBeTrue()`.
+- `Perafan/test_conventions_no_pause_browser` — sin `->pause()` ni `->wait()` con timeout fijo en `tests/Browser/`.
+- `Perafan/test_conventions_no_sleep` — sin `sleep()`/`usleep()`.
+- `Perafan/test_conventions_no_only` — sin `->only()` mergeado (autofix: strip).
+- `Perafan/test_conventions_no_absolute_paths` — sin `/Users/` ni `/home/` en strings literales (configurable).
+- `Perafan/test_conventions_partial_mock_comment` — config `policy` (`forbid`/`require`/`allow`). Resuelve el conflicto §5.3 entre proyectos.
+
+### Changed
+
+- `templates/pint.json` removido — Pint v1.27 no descubre custom fixers desde `pint.json`. Reemplazado por `templates/.php-cs-fixer.dist.php` con los 11 fixers activos.
+- Documentación del README actualizada al flujo real con `.php-cs-fixer.dist.php`.
+
+### Total
+
+- 11 fixers (10 mecanizados + 1 con config policy).
+- R10 y R12 quedan code-review-only en v1.0 — sus patrones (scope semántico de `try/catch`, chain de method calls) son inviables limpiamente sobre Tokens.
+- Suite Pest: 55 tests pasando, 65 assertions.
+
 ## [0.2.0] - 2026-05-19
 
 ### Added

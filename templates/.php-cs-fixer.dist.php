@@ -32,7 +32,6 @@ return (new Config())
         new PartialMockCommentPolicyFixer(),
     ])
     ->setRules([
-        '@PSR12' => true,
         'Perafan/test_conventions_max_description_length' => true,
         'Perafan/test_conventions_no_should_prefix' => true,
         'Perafan/test_conventions_forbidden_matchers' => true,
@@ -43,16 +42,10 @@ return (new Config())
         'Perafan/test_conventions_no_sleep' => true,
         'Perafan/test_conventions_no_only' => true,
         'Perafan/test_conventions_no_absolute_paths' => true,
-        'Perafan/test_conventions_partial_mock_comment' => ['policy' => 'allow'],
+        // 'Perafan/test_conventions_partial_mock_comment' => ['policy' => 'forbid'],
     ])
     ->setFinder(
         (new Finder())
-            ->in([__DIR__.'/src/Tokens', __DIR__.'/tests'])
-            ->notPath('Pest.php')
-            ->notPath('Unit/Fixers/NoAssertTrueTrueFixerTest.php')
-            ->notPath('Unit/Fixers/NoAbsolutePathsFixerTest.php')
-            ->notPath('Unit/Fixers/NoPauseInBrowserFixerTest.php')
-            ->notPath('Unit/Fixers/NoSleepFixerTest.php')
-            ->notPath('Unit/Fixers/NoOnlyFixerTest.php')
-            ->notPath('Unit/Fixers/PartialMockCommentPolicyFixerTest.php')
+            ->in([__DIR__.'/tests'])
+            ->name('*.php')
     );
