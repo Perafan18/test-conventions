@@ -1,0 +1,11 @@
+{
+    "name": "test-conventions",
+    "version": "0.1.0",
+    "description": "Loads Pest 4 + Laravel test conventions when an agent writes or edits test files in a project using perafan/test-conventions.",
+    "author": "Pedro Perafan",
+    "license": "MIT",
+    "homepage": "https://github.com/Perafan18/test-conventions",
+    "skills": [
+        "test-conventions"
+    ]
+}

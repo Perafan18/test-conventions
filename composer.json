@@ -1,0 +1,46 @@
+{
+    "name": "perafan/test-conventions",
+    "description": "Convenciones de tests Pest 4 + Laravel como custom fixers de Pint/PHP-CS-Fixer + doc canonico + plugin Claude Code.",
+    "type": "library",
+    "license": "MIT",
+    "keywords": ["pest", "laravel", "testing", "lint", "conventions", "pint", "php-cs-fixer"],
+    "authors": [
+        {
+            "name": "Pedro Perafan",
+            "email": "pedro.perafan.carrasco@gmail.com"
+        }
+    ],
+    "require": {
+        "php": "^8.2",
+        "friendsofphp/php-cs-fixer": "^3.0"
+    },
+    "require-dev": {
+        "pestphp/pest": "^4.0",
+        "laravel/pint": "^1.0",
+        "phpstan/phpstan": "^1.10"
+    },
+    "autoload": {
+        "psr-4": {
+            "Perafan\\TestConventions\\": "src/"
+        }
+    },
+    "autoload-dev": {
+        "psr-4": {
+            "Perafan\\TestConventions\\Tests\\": "tests/"
+        }
+    },
+    "config": {
+        "sort-packages": true,
+        "allow-plugins": {
+            "pestphp/pest-plugin": true
+        }
+    },
+    "scripts": {
+        "test": "pest --ci",
+        "lint": "pint --test",
+        "lint:fix": "pint",
+        "stan": "phpstan analyse"
+    },
+    "minimum-stability": "stable",
+    "prefer-stable": true
+}
