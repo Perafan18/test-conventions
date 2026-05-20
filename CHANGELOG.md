@@ -6,13 +6,18 @@ Formato basado en [Keep a Changelog](https://keepachangelog.com/en/1.1.0/) y [Se
 
 ## [Unreleased]
 
+## [0.2.0] - 2026-05-19
+
 ### Added
 
-- Esqueleto inicial del repo: estructura de directorios (`src/`, `templates/`, `tests/`), composer.json, README, LICENSE.
-- Working-draft v0.1 de `CONVENTIONS.md` extraido del intersect comun entre docs piloto de convenciones Pest 4 + Laravel.
-- Esqueleto `.claude-plugin/` para el skill `test-conventions`.
-- GitHub Actions workflow CI placeholder.
-- `templates/pint.json` template con las rules activas que el cliente puede copiar.
+- 4 Pint custom fixers piloto:
+  - `Perafan/test_conventions_max_description_length` — descripcion ≤ 50 chars (configurable).
+  - `Perafan/test_conventions_no_should_prefix` — sin `should `/`it tests `/`tests that ` (autofix).
+  - `Perafan/test_conventions_forbidden_matchers` — `toBe(true|false|null)` → semantic matchers (autofix).
+  - `Perafan/test_conventions_no_app_mocking` — no mockear `App\…` (configurable).
+- Utilidades de Tokens: `PestCallFinder`, `PestCall`, `NamespaceResolver`.
+- `AbstractTestConventionsFixer` con helper `lineFor()` para errores diagnosticos.
+- Suite Pest con 25 tests, dogfooding via `.php-cs-fixer.dist.php` propio.
 
 ### Direction
 

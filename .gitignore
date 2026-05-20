@@ -4,6 +4,8 @@
 /.phpunit.result.cache
 /.pest.cache
 /.phpstan.cache
+.php-cs-fixer.cache
+.php_cs.cache
 .phpunit.xml.local
 .DS_Store
 .idea/
