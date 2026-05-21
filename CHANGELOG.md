@@ -6,6 +6,12 @@ Formato basado en [Keep a Changelog](https://keepachangelog.com/en/1.1.0/) y [Se
 
 ## [Unreleased]
 
+## [2.0.4] - 2026-05-20
+
+### Added
+
+- `NoSleepFixer` now accepts an `allow_in_files` configuration option (default: `['DuskTestCase.php', 'TestCase.php', 'Pest.php']`) so legitimate `usleep()` calls in test-infrastructure files (e.g. polling for a server to come up in `DuskTestCase::setUp`) don't trigger the rule. The rule still applies to every actual test file.
+
 ## [2.0.3] - 2026-05-20
 
 ### Fixed

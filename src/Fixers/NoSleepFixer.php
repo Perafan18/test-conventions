@@ -4,15 +4,21 @@ declare(strict_types=1);
 
 namespace Perafan\TestConventions\Fixers;
 
+use PhpCsFixer\Fixer\ConfigurableFixerInterface;
+use PhpCsFixer\Fixer\ConfigurableFixerTrait;
+use PhpCsFixer\FixerConfiguration\FixerConfigurationResolver;
+use PhpCsFixer\FixerConfiguration\FixerConfigurationResolverInterface;
+use PhpCsFixer\FixerConfiguration\FixerOptionBuilder;
 use PhpCsFixer\FixerDefinition\CodeSample;
 use PhpCsFixer\FixerDefinition\FixerDefinition;
 use PhpCsFixer\FixerDefinition\FixerDefinitionInterface;
 use PhpCsFixer\Tokenizer\Tokens;
-use RuntimeException;
 use SplFileInfo;
 
-final class NoSleepFixer extends AbstractTestConventionsFixer
+final class NoSleepFixer extends AbstractTestConventionsFixer implements ConfigurableFixerInterface
 {
+    use ConfigurableFixerTrait;
+
     public function getName(): string
     {
         return 'Perafan/test_conventions_no_sleep';
@@ -31,8 +37,24 @@ final class NoSleepFixer extends AbstractTestConventionsFixer
         return $tokens->isTokenKindFound(T_STRING);
     }
 
+    protected function createConfigurationDefinition(): FixerConfigurationResolverInterface
+    {
+        return new FixerConfigurationResolver([
+            (new FixerOptionBuilder('allow_in_files', 'File basenames where sleep()/usleep() is permitted (typically test infrastructure files).'))
+                ->setAllowedTypes(['array'])
+                ->setDefault(['DuskTestCase.php', 'TestCase.php', 'Pest.php'])
+                ->getOption(),
+        ]);
+    }
+
     protected function applyFix(SplFileInfo $file, Tokens $tokens): void
     {
+        foreach ($this->configuration['allow_in_files'] as $allowed) {
+            if (str_ends_with($file->getPathname(), $allowed)) {
+                return;
+            }
+        }
+
         foreach ($tokens as $index => $token) {
             if (! $token->isGivenKind(T_STRING)) {
                 continue;
