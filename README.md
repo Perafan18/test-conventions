@@ -1,59 +1,55 @@
 # test-conventions
 
-> Convenciones de tests Pest 4 + Laravel como **custom fixers de Pint** + doc canonico versionado + plugin Claude Code.
+> Pest 4 + Laravel test conventions distributed as PHP-CS-Fixer custom fixers, behind a small `test-conventions` CLI. Canonical doc + Claude Code skill in the same repo.
 
-[![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](#licencia)
+[![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](#license)
 [![PHP](https://img.shields.io/badge/PHP-8.2%2B-blue.svg)]()
-[![Status](https://img.shields.io/badge/status-pre--release-orange.svg)]()
+[![Status](https://img.shields.io/badge/status-stable-green.svg)]()
 
-## Que es
+📖 También disponible en [español](README.es.md).
 
-Un sistema de **tres componentes** que estandariza convenciones de tests Pest 4 + Laravel:
+## What this is
 
-1. **Doc canonico** — [`CONVENTIONS.md`](CONVENTIONS.md) versionado con git tags. El yardstick humano-legible.
-2. **Paquete Composer de Pint custom fixers** — un fixer por regla mecanizable. Se carga via `pint.json` del cliente; corre con el pipeline Pint que el cliente ya tiene.
-3. **Plugin Claude Code** — skill que carga el doc en context cuando un agente escribe tests.
+A standard for Pest 4 + Laravel test files, shipped as **three artifacts** versioned together:
 
-Los tres viven en este repo y se liberan juntos via SemVer.
+1. **Canonical doc** — [`CONVENTIONS.md`](CONVENTIONS.md). The human-readable yardstick.
+2. **Composer package + CLI** — `vendor/bin/test-conventions` with `check`, `fix`, `list-rules`, `init`. Wraps PHP-CS-Fixer custom fixers; the client never has to touch `php-cs-fixer` directly.
+3. **Claude Code plugin** — skill that loads `CONVENTIONS.md` into context when an agent writes test files.
 
-## Por que existe
+The three are released together via SemVer.
 
-Cada proyecto Laravel/Pest tiende a derivar su propio doc de convenciones que ~85% se solapa con los demas. Cuando el doc evoluciona en un proyecto, la mejora no llega a los otros sin trabajo manual — drift sutil en 6 meses.
+## Why this exists
 
-Algunos proyectos meten las reglas mecanizables como `tests/Unit/ConventionsTest.php`. Patron pragmatico pero categorialmente confuso: es un *lint*, no un test del SUT. Este paquete resuelve la duplicacion con una sola fuente de verdad, y resuelve la confusion **distribuyendolas como custom fixers de Pint**: cero infra extra del cliente, autofix nativo, editor inline gratis.
+If you maintain several Laravel/Pest projects, you tend to derive the same conventions doc in each one and copy-paste it across. The intersection is roughly 85% (filosofía, AAA, factories, mocking only at boundaries, anti-patterns); the remaining 15% is genuinely per-project (factory states, custom expectations, the comments policy your project picked). Over time the 85% drifts subtly between projects.
 
-## Estado actual
+A common workaround is to put the mechanizable rules inside the test suite itself (e.g. `tests/Unit/ConventionsTest.php` that greps the rest of `tests/`). It works but it's categorically confused: that file is *lint*, not a test of the SUT. This package replaces the duplication with a single source of truth, and moves the enforcement to pre-commit + CI where it belongs.
 
-**Pre-release.** El doc canonico esta en working-draft. Los fixers estan por implementarse. La API de configuracion puede cambiar antes de `v1.0.0`.
-
-No usar todavia en produccion.
-
-## Instalacion
+## Quick start
 
 ```bash
 composer require --dev perafan/test-conventions
 vendor/bin/test-conventions init
 ```
 
-`init` genera dos archivos:
+`init` writes two small files:
 
-- **`.php-cs-fixer.dist.php`** — una linea que delega al config del vendor. Permite que plugins PHP-CS-Fixer de editores (PhpStorm, VSCode) den feedback inline gratis.
-- **`test-conventions.php`** — overrides opcionales (paths, allowlist, `partial_mock_comment_policy`, etc.).
+- **`.php-cs-fixer.dist.php`** — a one-liner that delegates to the vendor's config. Editor plugins (PhpStorm, VSCode with PHP-CS-Fixer extensions) pick it up automatically and show violations inline.
+- **`test-conventions.php`** — optional overrides (paths, allowlist, `partial_mock_comment_policy`, per-rule config).
 
-Listo. No hay que copiar boilerplate ni mantener una config larga del paquete — vive dentro del vendor.
+That's it. There's no boilerplate config to maintain in your repo — it lives inside `vendor/perafan/test-conventions/`.
 
-## Uso
+## Usage
 
-### Comandos
+### Commands
 
-| Comando | Hace |
+| Command | What it does |
 |---|---|
-| `vendor/bin/test-conventions check` | Reporta violaciones sin modificar archivos. Exit 1 si encuentra alguna |
-| `vendor/bin/test-conventions fix` | Aplica autofixes (`should ` → strip, `toBe(true)` → `toBeTrue()`, etc.) |
-| `vendor/bin/test-conventions list-rules` | Tabla de las 11 reglas con seccion del doc y modo (autofix/detect) |
-| `vendor/bin/test-conventions init` | Bootstrap (genera los dos archivos del cliente) |
+| `vendor/bin/test-conventions check` | Report violations without modifying files. Exits 1 if any are found |
+| `vendor/bin/test-conventions fix` | Apply autofixes (`should ` → strip, `toBe(true)` → `toBeTrue()`, etc.) |
+| `vendor/bin/test-conventions list-rules` | Print a table of the 11 rules with section, mode (autofix/detect), description |
+| `vendor/bin/test-conventions init` | Bootstrap the two client files |
 
-Output ejemplo:
+Example output:
 
 ```
 $ vendor/bin/test-conventions check
@@ -64,16 +60,16 @@ tests/Unit/PostTest.php:8: Perafan/test_conventions_forbidden_matchers Use toBeT
 Found 2 violations across 2 files.
 ```
 
-Formato `file:line: rule: message` clickable en editores y terminales modernas.
+`file:line:` is clickable in modern editors and terminals.
 
-### CI
+### CI (GitHub Actions)
 
 ```yaml
 - run: vendor/bin/pint --test
 - run: vendor/bin/test-conventions check
 ```
 
-Pint sigue manejando el preset Laravel + built-ins. `test-conventions` se encarga solo de las reglas de tests.
+Pint keeps handling the Laravel preset + built-ins. `test-conventions` handles only test-convention rules.
 
 ### Pre-commit (lefthook)
 
@@ -88,72 +84,81 @@ pre-commit:
       run: vendor/bin/test-conventions check {staged_files}
 ```
 
-### Fixes automaticos disponibles
-
-| Regla | Autofix |
-|---|---|
-| `no_should_prefix` | strip `should `, `it tests `, `tests that ` |
-| `forbidden_matchers` | `toBe(true)` → `toBeTrue()`, `toBe(false)` → `toBeFalse()`, `toBe(null)` → `toBeNull()` |
-| `no_only` | strip `->only()` |
-| `it_not_test` | rename `test(...)` → `it(...)` (excepto en arch tests) |
-
 ### Editor inline
 
-El `.php-cs-fixer.dist.php` que `init` genera delega al config del vendor, asi que plugins PHP-CS-Fixer de PhpStorm y VSCode muestran los errores inline. Gratis, sin configuracion extra.
+The `.php-cs-fixer.dist.php` that `init` generates delegates to the package config, so the PhpStorm and VSCode PHP-CS-Fixer plugins show violations inline. No extra setup.
 
-### Por que no `pint.json`
+### Why not `pint.json`
 
-Pint v1.27 no descubre custom fixers de terceros desde `pint.json`. Probado empiricamente — falla con "unknown fixers". El binario `vendor/bin/test-conventions` resuelve esto: internamente invoca PHP-CS-Fixer con la config completa registrada, asi el cliente no ve la mecanica. Si Pint upstream agrega soporte algun dia, `init` puede generar un `pint.json` en su lugar.
+Pint v1.27 doesn't auto-discover third-party PHP-CS-Fixer custom fixers from `pint.json` (verified empirically — it fails with `unknown fixers`). The `test-conventions` binary works around this by invoking PHP-CS-Fixer internally with the fixers properly registered. From the client's perspective there's a single, named CLI to run; the PHP-CS-Fixer plumbing stays inside the package. If Pint adds support upstream, `init` could switch to writing a `pint.json` entry instead.
 
-## Doc canonico
+## Rules
 
-Lee [`CONVENTIONS.md`](CONVENTIONS.md) — es el yardstick humano-legible. 11 secciones cubren filosofia, estructura, datos, expectativas, mocking, datasets, browser tests, anti-patrones, mecanica, y un apendice betterspecs.
-
-## Reglas distribuidas
-
-| ID | Regla | Autofix | Estado |
+| ID | Name | Mode | Section |
 |---|---|---|---|
-| R01 | `it()` siempre, no `test()` top-level | Si (rename) | v0.3 |
-| R02 | Descripcion ≤ 50 chars | No | v0.2 |
-| R03 | Sin prefijo `should ` / `it tests ` / `tests that ` | Si (strip) | v0.2 |
-| R04 | Sin `toBe(true\|false\|null)` | Si (rewrite) | v0.2 |
-| R05 | Sin `assertTrue(true)` ni `expect(true)->toBeTrue()` | No | v0.3 |
-| R06 | No mockear `App\…` | No | v0.2 |
-| R07 | Sin `->pause()` en `tests/Browser/` | No | v0.3 |
-| R08 | Sin `sleep()` / `usleep()` en bodies de test | No | v0.3 |
-| R09 | Sin `->only()` mergeado | Si (remove) | v0.3 |
-| R10 | Sin `try/catch` en bodies de test | No | **code-review-only en v1.0** |
-| R11 | Sin paths absolutos `/Users/`, `/home/` | No | v0.3 |
-| R12 | Inserts en tablas claves via helpers | No | **code-review-only en v1.0** |
-| §5.3 | `partial_mock_comment_policy` (config: forbid/require/allow) | No | v0.3 |
+| R01 | `it()` instead of `test()` top-level | autofix | §2.1 |
+| R02 | Description ≤ 50 chars | detect | §2.2 |
+| R03 | No `should ` / `it tests ` / `tests that ` prefix | autofix (strip) | §2.2 |
+| R04 | No `toBe(true\|false\|null)` — use semantic matchers | autofix (rewrite) | §4.2 |
+| R05 | No `assertTrue(true)` / `expect(true)->toBeTrue()` | detect | §8.3 |
+| R06 | No mocking `App\…` (configurable namespaces) | detect | §5.1 |
+| R07 | No `->pause()` / `->wait()` with fixed timeouts in Browser tests | detect | §7.3 |
+| R08 | No `sleep()` / `usleep()` in tests | detect | §8.5 |
+| R09 | No `->only()` reaching main | autofix (strip) | §8.12 |
+| R11 | No `/Users/` / `/home/` absolute paths in tests | detect | §8.13 |
+| §5.3 | `partial_mock_comment_policy`: `forbid` / `require` / `allow` | detect | §5.3 |
 
-R10 y R12 quedan a code review humano/agente porque requieren scope tracking sobre Tokens (no es viable hacerlo limpio en PHP-CS-Fixer custom fixers). Si aparecen como dolor real (regla del tres: 3+ instancias detectadas en review), sprint dedicado para implementarlas.
+**Code-review-only** (NOT mechanized — patterns infeasible to express cleanly over Tokens; revisit later if real pain emerges):
 
-## Plugin Claude Code
+- R10 — no `try/catch` in test bodies (requires scope tracking to distinguish from `Http::fake([...])` callbacks)
+- R12 — inserts in key tables go through helpers (requires method-chain analysis)
+
+Read [`CONVENTIONS.md`](CONVENTIONS.md) for the full doc.
+
+## Claude Code plugin
+
+For agents (Claude Code) writing or editing tests:
 
 ```
 /plugin marketplace add github:Perafan18/test-conventions
 /plugin install test-conventions
 ```
 
-El skill carga `CONVENTIONS.md` en context cuando un agente esta escribiendo tests Pest en un proyecto que tiene `perafan/test-conventions` instalado. Sugiere correr `vendor/bin/php-cs-fixer fix --dry-run` al terminar.
+The skill loads `CONVENTIONS.md` into context whenever an agent edits or writes test files in a project that has `perafan/test-conventions` installed. Suggests `vendor/bin/test-conventions check` after writing.
 
-## Roadmap
+## Configuration (`test-conventions.php`)
 
-| Fase | Objetivo |
-|---|---|
-| 1 | Estabilizar `CONVENTIONS.md` v0.1 |
-| 2 | 4 Pint fixers piloto (R02, R03, R04, R06) — `v0.2.0` |
-| 3 | Primer cliente real adoptado — `v0.3.0` |
-| 4 | Segundo cliente + 10 fixers totales — `v1.0.0` |
-| 5 | Plugin Claude Code distribuible |
+```php
+<?php
 
-## Contribuir
+return [
+    'paths' => ['tests'],
 
-Pre-release. Contribuciones externas se abren al alcanzar `v1.0.0`.
+    'allowlist' => [
+        // Substrings or paths to skip from the Finder.
+        // 'Unit/ArchTest.php',
+    ],
 
-El paquete sigue su propio estandar — la suite de tests del paquete debe pasar `vendor/bin/pint --test` (que incluye nuestros propios fixers) antes de cualquier merge. Dogfooding.
+    'rules' => [
+        // Override default rule configurations. Only include what you change.
+        // 'Perafan/test_conventions_max_description_length' => ['limit' => 50],
+        // 'Perafan/test_conventions_partial_mock_comment'   => ['policy' => 'forbid'],
+    ],
+];
+```
 
-## Licencia
+## Architecture notes
+
+- **Canonical/local split**: ~85% of every project's conventions doc is portable (filosofía, structure, mocking principles, anti-patterns). That lives in `CONVENTIONS.md`. The other ~15% is per-project (factory states, custom expectations, exact commands, coverage threshold) and lives in each consumer's own docs.
+- **Conflict resolution via config, not forks**: when two real projects disagree (e.g. §5.3 partial mock comments — one project's policy gains, another's loses), the rule stays in the package and the posture is per-project in `test-conventions.php`. No bifurcation of the canonical doc.
+- **`throw` vs collector**: when fixers `throw RuntimeException` to report a violation, PHP-CS-Fixer treats the file as errored and skips remaining fixers on it. The CLI sets an env var that activates a file-based `ViolationCollector` inside fixers — every violation across every rule and every file is surfaced in a single `check`. Backward-compatible: without the env var, fixers fall back to `throw`, so clients still using a manually-authored `.php-cs-fixer.dist.php` from older versions keep working.
+
+## Contributing
+
+Stable. Contributions welcome via Issues and PRs.
+
+The package follows its own standard — the suite must pass `vendor/bin/test-conventions check` (dogfooded against `src/Tokens/` and `tests/`) before any merge.
+
+## License
 
 [MIT](LICENSE). Copyright © Pedro Perafan.
