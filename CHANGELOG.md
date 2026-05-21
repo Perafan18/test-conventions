@@ -6,6 +6,19 @@ Formato basado en [Keep a Changelog](https://keepachangelog.com/en/1.1.0/) y [Se
 
 ## [Unreleased]
 
+## [2.0.2] - 2026-05-20
+
+### Fixed
+
+- Loosened `symfony/console` and `symfony/process` constraints from `^7.0` to `^7.0 || ^8.0`. The `^7.0`-only constraint forced consumer projects (which often run on Symfony 8 via Laravel ≥ 12) to downgrade those components when installing this package, breaking Laravel Dusk's `ChromeProcess` (`TimeoutException` in Browser tests) and other code paths that depend on Symfony 8 behaviour.
+- Tested under both Symfony 7 and Symfony 8 installations; package suite passes (57 tests, 67 assertions) on each.
+
+## [2.0.1] - 2026-05-20
+
+### Fixed
+
+- `templates/.php-cs-fixer.dist.php` and `php-cs-fixer.config.php` now `require_once` the Composer autoload defensively, so Pint v1.27+ parallel worker processes can find the custom fixer classes without booting the client's autoload manually.
+
 ## [2.0.0] - 2026-05-20
 
 ### Breaking — new CLI surface
