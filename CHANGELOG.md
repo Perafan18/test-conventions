@@ -6,6 +6,12 @@ Formato basado en [Keep a Changelog](https://keepachangelog.com/en/1.1.0/) y [Se
 
 ## [Unreleased]
 
+## [2.0.3] - 2026-05-20
+
+### Fixed
+
+- Use `Application::addCommands(array)` instead of `Application::add(Command)` in the CLI bootstrap. The single-command `add()` method was removed in Symfony Console v8. The array-based `addCommands()` works on both v7 and v8. Without this fix, projects that resolve to Symfony Console v8 (Laravel ≥ 12 + recent installs) hit `Call to undefined method Application::add()` on first invocation of `vendor/bin/test-conventions`.
+
 ## [2.0.2] - 2026-05-20
 
 ### Fixed
