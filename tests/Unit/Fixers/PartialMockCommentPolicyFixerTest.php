@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-use Perafan\TestConventions\Fixers\PartialMockCommentPolicyFixer;
+use Perafan\Pinto\Fixers\PartialMockCommentPolicyFixer;
 
 beforeEach(function () {
     $this->fixer = new PartialMockCommentPolicyFixer();

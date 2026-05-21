@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace Perafan\TestConventions\Fixers;
+namespace Perafan\Pinto\Fixers;
 
 use PhpCsFixer\Fixer\ConfigurableFixerInterface;
 use PhpCsFixer\Fixer\ConfigurableFixerTrait;
@@ -16,7 +16,7 @@ use PhpCsFixer\Tokenizer\Tokens;
 use RuntimeException;
 use SplFileInfo;
 
-final class PartialMockCommentPolicyFixer extends AbstractTestConventionsFixer implements ConfigurableFixerInterface
+final class PartialMockCommentPolicyFixer extends AbstractPintoFixer implements ConfigurableFixerInterface
 {
     use ConfigurableFixerTrait;
 
@@ -28,7 +28,7 @@ final class PartialMockCommentPolicyFixer extends AbstractTestConventionsFixer i
 
     public function getName(): string
     {
-        return 'Perafan/test_conventions_partial_mock_comment';
+        return 'Pinto/partial_mock_comment';
     }
 
     public function getDefinition(): FixerDefinitionInterface

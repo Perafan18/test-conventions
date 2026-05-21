@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-use Perafan\TestConventions\Fixers\NoAbsolutePathsFixer;
+use Perafan\Pinto\Fixers\NoAbsolutePathsFixer;
 
 beforeEach(function () {
     $this->fixer = new NoAbsolutePathsFixer();

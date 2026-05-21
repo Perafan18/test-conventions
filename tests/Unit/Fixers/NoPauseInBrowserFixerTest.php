@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-use Perafan\TestConventions\Fixers\NoPauseInBrowserFixer;
+use Perafan\Pinto\Fixers\NoPauseInBrowserFixer;
 
 beforeEach(function () {
     $this->fixer = new NoPauseInBrowserFixer();

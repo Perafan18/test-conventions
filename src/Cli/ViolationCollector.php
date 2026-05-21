@@ -2,11 +2,11 @@
 
 declare(strict_types=1);
 
-namespace Perafan\TestConventions\Cli;
+namespace Perafan\Pinto\Cli;
 
 final class ViolationCollector
 {
-    public const ENV_VAR = 'TEST_CONVENTIONS_VIOLATIONS_FILE';
+    public const ENV_VAR = 'PINTO_VIOLATIONS_FILE';
 
     public static function path(): ?string
     {

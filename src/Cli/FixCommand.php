@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace Perafan\TestConventions\Cli;
+namespace Perafan\Pinto\Cli;
 
 use Symfony\Component\Console\Attribute\AsCommand;
 use Symfony\Component\Console\Command\Command;
@@ -18,7 +18,7 @@ final class FixCommand extends Command
         $this->addArgument(
             'paths',
             InputArgument::IS_ARRAY | InputArgument::OPTIONAL,
-            'Specific files or directories to fix (defaults to the paths in test-conventions.php).'
+            'Specific files or directories to fix (defaults to the paths in pinto.php).'
         );
     }
 

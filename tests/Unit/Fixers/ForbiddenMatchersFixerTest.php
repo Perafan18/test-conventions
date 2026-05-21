@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-use Perafan\TestConventions\Fixers\ForbiddenMatchersFixer;
+use Perafan\Pinto\Fixers\ForbiddenMatchersFixer;
 
 beforeEach(function () {
     $this->fixer = new ForbiddenMatchersFixer();

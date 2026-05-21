@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-use Perafan\TestConventions\Fixers\NoSleepFixer;
+use Perafan\Pinto\Fixers\NoSleepFixer;
 
 beforeEach(function () {
     $this->fixer = new NoSleepFixer();

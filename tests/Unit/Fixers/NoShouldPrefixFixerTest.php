@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-use Perafan\TestConventions\Fixers\NoShouldPrefixFixer;
+use Perafan\Pinto\Fixers\NoShouldPrefixFixer;
 
 beforeEach(function () {
     $this->fixer = new NoShouldPrefixFixer();

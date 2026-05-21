@@ -1,5 +1,5 @@
 {
-    "name": "perafan/test-conventions",
+    "name": "perafan/pinto",
     "description": "Convenciones de tests Pest 4 + Laravel como custom fixers de Pint/PHP-CS-Fixer + doc canonico + plugin Claude Code.",
     "type": "library",
     "license": "MIT",
@@ -17,7 +17,7 @@
         "symfony/process": "^7.0 || ^8.0"
     },
     "bin": [
-        "bin/test-conventions"
+        "bin/pinto"
     ],
     "require-dev": {
         "pestphp/pest": "^4.0",
@@ -26,12 +26,12 @@
     },
     "autoload": {
         "psr-4": {
-            "Perafan\\TestConventions\\": "src/"
+            "Perafan\\Pinto\\": "src/"
         }
     },
     "autoload-dev": {
         "psr-4": {
-            "Perafan\\TestConventions\\Tests\\": "tests/"
+            "Perafan\\Pinto\\Tests\\": "tests/"
         }
     },
     "config": {

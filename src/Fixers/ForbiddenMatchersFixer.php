@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace Perafan\TestConventions\Fixers;
+namespace Perafan\Pinto\Fixers;
 
 use PhpCsFixer\FixerDefinition\CodeSample;
 use PhpCsFixer\FixerDefinition\FixerDefinition;
@@ -11,7 +11,7 @@ use PhpCsFixer\Tokenizer\Token;
 use PhpCsFixer\Tokenizer\Tokens;
 use SplFileInfo;
 
-final class ForbiddenMatchersFixer extends AbstractTestConventionsFixer
+final class ForbiddenMatchersFixer extends AbstractPintoFixer
 {
     private const REPLACEMENTS = [
         'true' => 'toBeTrue',
@@ -21,7 +21,7 @@ final class ForbiddenMatchersFixer extends AbstractTestConventionsFixer
 
     public function getName(): string
     {
-        return 'Perafan/test_conventions_forbidden_matchers';
+        return 'Pinto/forbidden_matchers';
     }
 
     public function getDefinition(): FixerDefinitionInterface

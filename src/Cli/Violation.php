@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace Perafan\TestConventions\Cli;
+namespace Perafan\Pinto\Cli;
 
 final readonly class Violation
 {

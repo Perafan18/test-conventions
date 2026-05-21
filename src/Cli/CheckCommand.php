@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace Perafan\TestConventions\Cli;
+namespace Perafan\Pinto\Cli;
 
 use Symfony\Component\Console\Attribute\AsCommand;
 use Symfony\Component\Console\Command\Command;
@@ -18,7 +18,7 @@ final class CheckCommand extends Command
         $this->addArgument(
             'paths',
             InputArgument::IS_ARRAY | InputArgument::OPTIONAL,
-            'Specific files or directories to check (defaults to the paths in test-conventions.php).'
+            'Specific files or directories to check (defaults to the paths in pinto.php).'
         );
     }
 
@@ -59,7 +59,7 @@ final class CheckCommand extends Command
 
         if ($totalAutofixable > 0) {
             $output->writeln(sprintf(
-                '<comment>%d %s autofixable violations. Run `vendor/bin/test-conventions fix` to apply.</comment>',
+                '<comment>%d %s autofixable violations. Run `vendor/bin/pinto fix` to apply.</comment>',
                 $totalAutofixable,
                 $totalAutofixable === 1 ? 'file has' : 'files have'
             ));

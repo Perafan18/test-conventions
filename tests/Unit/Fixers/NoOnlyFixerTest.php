@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-use Perafan\TestConventions\Fixers\NoOnlyFixer;
+use Perafan\Pinto\Fixers\NoOnlyFixer;
 
 beforeEach(function () {
     $this->fixer = new NoOnlyFixer();

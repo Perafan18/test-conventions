@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace Perafan\TestConventions\Fixers;
+namespace Perafan\Pinto\Fixers;
 
 use PhpCsFixer\FixerDefinition\CodeSample;
 use PhpCsFixer\FixerDefinition\FixerDefinition;
@@ -11,11 +11,11 @@ use PhpCsFixer\Tokenizer\Tokens;
 use RuntimeException;
 use SplFileInfo;
 
-final class NoAssertTrueTrueFixer extends AbstractTestConventionsFixer
+final class NoAssertTrueTrueFixer extends AbstractPintoFixer
 {
     public function getName(): string
     {
-        return 'Perafan/test_conventions_no_assert_true_true';
+        return 'Pinto/no_assert_true_true';
     }
 
     public function getDefinition(): FixerDefinitionInterface

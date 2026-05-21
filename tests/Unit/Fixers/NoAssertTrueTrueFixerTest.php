@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-use Perafan\TestConventions\Fixers\NoAssertTrueTrueFixer;
+use Perafan\Pinto\Fixers\NoAssertTrueTrueFixer;
 
 beforeEach(function () {
     $this->fixer = new NoAssertTrueTrueFixer();

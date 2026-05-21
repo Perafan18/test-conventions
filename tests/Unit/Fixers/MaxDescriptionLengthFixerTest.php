@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-use Perafan\TestConventions\Fixers\MaxDescriptionLengthFixer;
+use Perafan\Pinto\Fixers\MaxDescriptionLengthFixer;
 
 beforeEach(function () {
     $this->fixer = new MaxDescriptionLengthFixer();

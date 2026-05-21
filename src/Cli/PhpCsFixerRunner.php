@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace Perafan\TestConventions\Cli;
+namespace Perafan\Pinto\Cli;
 
 use Symfony\Component\Process\Process;
 
@@ -29,7 +29,7 @@ final class PhpCsFixerRunner
         }
 
         $configPath = $this->packageRoot.'/php-cs-fixer.config.php';
-        $violationsFile = tempnam(sys_get_temp_dir(), 'test-conventions-');
+        $violationsFile = tempnam(sys_get_temp_dir(), 'pinto-');
         if ($violationsFile === false) {
             return [
                 'exitCode' => 1,

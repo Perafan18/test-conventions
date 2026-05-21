@@ -1,6 +1,6 @@
 ---
 name: test-conventions
-description: Load Pest 4 + Laravel test conventions when writing or editing test files in a project that uses perafan/test-conventions. Activates on tests/**/*.php paths and Pest keywords.
+description: Load Pest 4 + Laravel test conventions when writing or editing test files in a project that uses perafan/pinto. Activates on tests/**/*.php paths and Pest keywords.
 trigger:
   file_patterns:
     - "tests/**/*.php"
@@ -15,16 +15,16 @@ trigger:
     - "RefreshDatabase"
     - "Http::fake"
     - "Storage::fake"
-  dependency: "perafan/test-conventions"
+  dependency: "perafan/pinto"
 ---
 
 # Test Conventions Skill
 
-Activate this skill when the agent is writing, editing, or discussing test files in a project that has `perafan/test-conventions` in `composer.json`.
+Activate this skill when the agent is writing, editing, or discussing test files in a project that has `perafan/pinto` in `composer.json`.
 
 ## What to do
 
-1. **Read `vendor/perafan/test-conventions/CONVENTIONS.md`** and load it as context. This is the canonical document.
+1. **Read `vendor/perafan/pinto/CONVENTIONS.md`** and load it as context. This is the canonical document.
 2. **Look for the project-local appendix**:
    - First check `docs/test-conventions.md` (if the project commits it to the repo).
    - If not found, ask the user where the local appendix lives (typically in a separate Obsidian vault or knowledge base).
@@ -40,9 +40,9 @@ Activate this skill when the agent is writing, editing, or discussing test files
    - Avoid `->only()`, `->pause()`, `sleep()` in tests
 5. **After writing tests**, suggest running:
    ```
-   vendor/bin/test-conventions check tests/path/to/new/test.php
+   vendor/bin/pinto check tests/path/to/new/test.php
    ```
-   to verify against the linter. For autofixable violations (`should ` prefix, `toBe(true)`, `->only()`, top-level `test('...')`), run `vendor/bin/test-conventions fix` to apply fixes automatically.
+   to verify against the linter. For autofixable violations (`should ` prefix, `toBe(true)`, `->only()`, top-level `test('...')`), run `vendor/bin/pinto fix` to apply fixes automatically.
 
    > Note: the package distributes PHP-CS-Fixer custom fixers but exposes them through the `test-conventions` binary so the client never sees `php-cs-fixer` plumbing. Pint v1.27 does not auto-discover third-party custom fixers; the binary works around that internally.
 
@@ -57,7 +57,7 @@ Activate this skill when the agent is writing, editing, or discussing test files
 
 If the user asks for behavior the conventions don't address:
 
-- Propose updating `CONVENTIONS.md` via PR to `perafan/test-conventions`.
+- Propose updating `CONVENTIONS.md` via PR to `perafan/pinto`.
 - Document the exception inline (this is one of the few cases where a comment in a test is valid, depending on the project's `partial_mock_comment_policy` setting in `.php-cs-fixer.dist.php`).
 - Do not improvise silently.
 
@@ -65,8 +65,8 @@ If the user asks for behavior the conventions don't address:
 
 The project's `.php-cs-fixer.dist.php` may configure rule-specific options. Common overrides to check:
 
-- `Perafan/test_conventions_max_description_length` — may differ from default 50
-- `Perafan/test_conventions_partial_mock_comment.policy` — `forbid` / `require` / `allow` (legitimate disagreement between projects)
+- `Pinto/max_description_length` — may differ from default 50
+- `Pinto/partial_mock_comment.policy` — `forbid` / `require` / `allow` (legitimate disagreement between projects)
 - Rules disabled (omitted from the `setRules` array, or set to `false`) — respect what the project chose to skip
 - `Finder` allowlists (`notPath()`) — pre-existing violations that have not yet been fixed; do not introduce new code into those files that breaks the rule
 

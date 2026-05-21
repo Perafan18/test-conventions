@@ -17,7 +17,7 @@ return [
         // Override default rule configurations. Only include the rules you want to customise.
         // The defaults activate all 11 fixers; rules omitted here keep their defaults.
 
-        // 'Perafan/test_conventions_max_description_length' => ['limit' => 50],
+        // 'Pinto/max_description_length' => ['limit' => 50],
 
         // §5.3 conflict — pick the posture matching your project's comments policy:
         //
@@ -26,6 +26,6 @@ return [
         // 'require' — inline comment is required (the project's documented exception).
         // 'allow'   — no enforcement either way (default).
         //
-        // 'Perafan/test_conventions_partial_mock_comment' => ['policy' => 'forbid'],
+        // 'Pinto/partial_mock_comment' => ['policy' => 'forbid'],
     ],
 ];

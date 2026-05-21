@@ -1,6 +1,6 @@
-# test-conventions
+# pinto
 
-> Pest 4 + Laravel test conventions distributed as PHP-CS-Fixer custom fixers, behind a small `test-conventions` CLI. Canonical doc + Claude Code skill in the same repo.
+> Pest 4 + Laravel test conventions distributed as PHP-CS-Fixer custom fixers, behind a small `pinto` CLI. Canonical doc + Claude Code skill in the same repo.
 
 [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](#license)
 [![PHP](https://img.shields.io/badge/PHP-8.2%2B-blue.svg)]()
@@ -13,7 +13,7 @@
 A standard for Pest 4 + Laravel test files, shipped as **three artifacts** versioned together:
 
 1. **Canonical doc** — [`CONVENTIONS.md`](CONVENTIONS.md). The human-readable yardstick.
-2. **Composer package + CLI** — `vendor/bin/test-conventions` with `check`, `fix`, `list-rules`, `init`. Wraps PHP-CS-Fixer custom fixers; the client never has to touch `php-cs-fixer` directly.
+2. **Composer package + CLI** — `vendor/bin/pinto` with `check`, `fix`, `list-rules`, `init`. Wraps PHP-CS-Fixer custom fixers; the client never has to touch `php-cs-fixer` directly.
 3. **Claude Code plugin** — skill that loads `CONVENTIONS.md` into context when an agent writes test files.
 
 The three are released together via SemVer.
@@ -27,16 +27,16 @@ A common workaround is to put the mechanizable rules inside the test suite itsel
 ## Quick start
 
 ```bash
-composer require --dev perafan/test-conventions
-vendor/bin/test-conventions init
+composer require --dev perafan/pinto
+vendor/bin/pinto init
 ```
 
 `init` writes two small files:
 
 - **`.php-cs-fixer.dist.php`** — a one-liner that delegates to the vendor's config. Editor plugins (PhpStorm, VSCode with PHP-CS-Fixer extensions) pick it up automatically and show violations inline.
-- **`test-conventions.php`** — optional overrides (paths, allowlist, `partial_mock_comment_policy`, per-rule config).
+- **`pinto.php`** — optional overrides (paths, allowlist, `partial_mock_comment_policy`, per-rule config).
 
-That's it. There's no boilerplate config to maintain in your repo — it lives inside `vendor/perafan/test-conventions/`.
+That's it. There's no boilerplate config to maintain in your repo — it lives inside `vendor/perafan/pinto/`.
 
 ## Usage
 
@@ -44,19 +44,19 @@ That's it. There's no boilerplate config to maintain in your repo — it lives i
 
 | Command | What it does |
 |---|---|
-| `vendor/bin/test-conventions check` | Report violations without modifying files. Exits 1 if any are found |
-| `vendor/bin/test-conventions fix` | Apply autofixes (`should ` → strip, `toBe(true)` → `toBeTrue()`, etc.) |
-| `vendor/bin/test-conventions list-rules` | Print a table of the 11 rules with section, mode (autofix/detect), description |
-| `vendor/bin/test-conventions init` | Bootstrap the two client files |
+| `vendor/bin/pinto check` | Report violations without modifying files. Exits 1 if any are found |
+| `vendor/bin/pinto fix` | Apply autofixes (`should ` → strip, `toBe(true)` → `toBeTrue()`, etc.) |
+| `vendor/bin/pinto list-rules` | Print a table of the 11 rules with section, mode (autofix/detect), description |
+| `vendor/bin/pinto init` | Bootstrap the two client files |
 
 Example output:
 
 ```
-$ vendor/bin/test-conventions check
-tests/Feature/UserTest.php:14: Perafan/test_conventions_max_description_length Description exceeds 50 chars (got 67): "..."
-tests/Unit/PostTest.php:8: Perafan/test_conventions_forbidden_matchers Use toBeTrue() instead of toBe(true)
+$ vendor/bin/pinto check
+tests/Feature/UserTest.php:14: Pinto/max_description_length Description exceeds 50 chars (got 67): "..."
+tests/Unit/PostTest.php:8: Pinto/forbidden_matchers Use toBeTrue() instead of toBe(true)
 
-1 file has autofixable violations. Run `vendor/bin/test-conventions fix` to apply.
+1 file has autofixable violations. Run `vendor/bin/pinto fix` to apply.
 Found 2 violations across 2 files.
 ```
 
@@ -66,10 +66,10 @@ Found 2 violations across 2 files.
 
 ```yaml
 - run: vendor/bin/pint --test
-- run: vendor/bin/test-conventions check
+- run: vendor/bin/pinto check
 ```
 
-Pint keeps handling the Laravel preset + built-ins. `test-conventions` handles only test-convention rules.
+Pint keeps handling the Laravel preset + built-ins. `pinto` handles only test-convention rules.
 
 ### Pre-commit (lefthook)
 
@@ -79,9 +79,9 @@ pre-commit:
     pint:
       glob: "*.php"
       run: vendor/bin/pint --test {staged_files}
-    test-conventions:
+    pinto:
       glob: "tests/**/*.php"
-      run: vendor/bin/test-conventions check {staged_files}
+      run: vendor/bin/pinto check {staged_files}
 ```
 
 ### Editor inline
@@ -90,7 +90,7 @@ The `.php-cs-fixer.dist.php` that `init` generates delegates to the package conf
 
 ### Why not `pint.json`
 
-Pint v1.27 doesn't auto-discover third-party PHP-CS-Fixer custom fixers from `pint.json` (verified empirically — it fails with `unknown fixers`). The `test-conventions` binary works around this by invoking PHP-CS-Fixer internally with the fixers properly registered. From the client's perspective there's a single, named CLI to run; the PHP-CS-Fixer plumbing stays inside the package. If Pint adds support upstream, `init` could switch to writing a `pint.json` entry instead.
+Pint v1.27 doesn't auto-discover third-party PHP-CS-Fixer custom fixers from `pint.json` (verified empirically — it fails with `unknown fixers`). The `pinto` binary works around this by invoking PHP-CS-Fixer internally with the fixers properly registered. From the client's perspective there's a single, named CLI to run; the PHP-CS-Fixer plumbing stays inside the package. If Pint adds support upstream, `init` could switch to writing a `pint.json` entry instead.
 
 ## Rules
 
@@ -120,13 +120,13 @@ Read [`CONVENTIONS.md`](CONVENTIONS.md) for the full doc.
 For agents (Claude Code) writing or editing tests:
 
 ```
-/plugin marketplace add github:Perafan18/test-conventions
-/plugin install test-conventions
+/plugin marketplace add github:Perafan18/pinto
+/plugin install pinto
 ```
 
-The skill loads `CONVENTIONS.md` into context whenever an agent edits or writes test files in a project that has `perafan/test-conventions` installed. Suggests `vendor/bin/test-conventions check` after writing.
+The skill loads `CONVENTIONS.md` into context whenever an agent edits or writes test files in a project that has `perafan/pinto` installed. Suggests `vendor/bin/pinto check` after writing.
 
-## Configuration (`test-conventions.php`)
+## Configuration (`pinto.php`)
 
 ```php
 <?php
@@ -141,8 +141,8 @@ return [
 
     'rules' => [
         // Override default rule configurations. Only include what you change.
-        // 'Perafan/test_conventions_max_description_length' => ['limit' => 50],
-        // 'Perafan/test_conventions_partial_mock_comment'   => ['policy' => 'forbid'],
+        // 'Pinto/max_description_length' => ['limit' => 50],
+        // 'Pinto/partial_mock_comment'   => ['policy' => 'forbid'],
     ],
 ];
 ```
@@ -150,14 +150,14 @@ return [
 ## Architecture notes
 
 - **Canonical/local split**: ~85% of every project's conventions doc is portable (filosofía, structure, mocking principles, anti-patterns). That lives in `CONVENTIONS.md`. The other ~15% is per-project (factory states, custom expectations, exact commands, coverage threshold) and lives in each consumer's own docs.
-- **Conflict resolution via config, not forks**: when two real projects disagree (e.g. §5.3 partial mock comments — one project's policy gains, another's loses), the rule stays in the package and the posture is per-project in `test-conventions.php`. No bifurcation of the canonical doc.
+- **Conflict resolution via config, not forks**: when two real projects disagree (e.g. §5.3 partial mock comments — one project's policy gains, another's loses), the rule stays in the package and the posture is per-project in `pinto.php`. No bifurcation of the canonical doc.
 - **`throw` vs collector**: when fixers `throw RuntimeException` to report a violation, PHP-CS-Fixer treats the file as errored and skips remaining fixers on it. The CLI sets an env var that activates a file-based `ViolationCollector` inside fixers — every violation across every rule and every file is surfaced in a single `check`. Backward-compatible: without the env var, fixers fall back to `throw`, so clients still using a manually-authored `.php-cs-fixer.dist.php` from older versions keep working.
 
 ## Contributing
 
 Stable. Contributions welcome via Issues and PRs.
 
-The package follows its own standard — the suite must pass `vendor/bin/test-conventions check` (dogfooded against `src/Tokens/` and `tests/`) before any merge.
+The package follows its own standard — the suite must pass `vendor/bin/pinto check` (dogfooded against `src/Tokens/` and `tests/`) before any merge.
 
 ## License
 

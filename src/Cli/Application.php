@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace Perafan\TestConventions\Cli;
+namespace Perafan\Pinto\Cli;
 
 use Symfony\Component\Console\Application as BaseApplication;
 
@@ -12,7 +12,7 @@ final class Application extends BaseApplication
 
     public function __construct()
     {
-        parent::__construct('test-conventions', self::VERSION);
+        parent::__construct('pinto', self::VERSION);
 
         $this->addCommands([
             new CheckCommand(),

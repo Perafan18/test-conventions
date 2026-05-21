@@ -2,9 +2,9 @@
 
 declare(strict_types=1);
 
-namespace Perafan\TestConventions\Fixers;
+namespace Perafan\Pinto\Fixers;
 
-use Perafan\TestConventions\Tokens\PestCallFinder;
+use Perafan\Pinto\Tokens\PestCallFinder;
 use PhpCsFixer\Fixer\ConfigurableFixerInterface;
 use PhpCsFixer\Fixer\ConfigurableFixerTrait;
 use PhpCsFixer\FixerConfiguration\FixerConfigurationResolver;
@@ -17,13 +17,13 @@ use PhpCsFixer\Tokenizer\Tokens;
 use RuntimeException;
 use SplFileInfo;
 
-final class MaxDescriptionLengthFixer extends AbstractTestConventionsFixer implements ConfigurableFixerInterface
+final class MaxDescriptionLengthFixer extends AbstractPintoFixer implements ConfigurableFixerInterface
 {
     use ConfigurableFixerTrait;
 
     public function getName(): string
     {
-        return 'Perafan/test_conventions_max_description_length';
+        return 'Pinto/max_description_length';
     }
 
     public function getDefinition(): FixerDefinitionInterface

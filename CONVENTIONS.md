@@ -315,7 +315,7 @@ $this->mock(ExternalClient::class)->shouldReceive('fetch')->andReturn(...);
 
 `$this->partialMock(Service::class)` solo cuando el SUT tiene un método externo costoso (PDF rendering, ffmpeg, queue release()) que no se puede observar de otra forma.
 
-**Comments policy.** Este es un punto donde proyectos legítimos discrepan. La regla `partial_mock_comment_policy` en `test-conventions.php` toma la decisión por proyecto:
+**Comments policy.** Este es un punto donde proyectos legítimos discrepan. La regla `partial_mock_comment_policy` en `pinto.php` toma la decisión por proyecto:
 
 | Valor | Comportamiento |
 |---|---|

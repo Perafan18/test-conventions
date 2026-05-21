@@ -1,4 +1,4 @@
-# test-conventions
+# pinto
 
 > Convenciones de tests Pest 4 + Laravel como **custom fixers de Pint** + doc canonico versionado + plugin Claude Code.
 
@@ -31,14 +31,14 @@ No usar todavia en produccion.
 ## Instalacion
 
 ```bash
-composer require --dev perafan/test-conventions
-vendor/bin/test-conventions init
+composer require --dev perafan/pinto
+vendor/bin/pinto init
 ```
 
 `init` genera dos archivos:
 
 - **`.php-cs-fixer.dist.php`** — una linea que delega al config del vendor. Permite que plugins PHP-CS-Fixer de editores (PhpStorm, VSCode) den feedback inline gratis.
-- **`test-conventions.php`** — overrides opcionales (paths, allowlist, `partial_mock_comment_policy`, etc.).
+- **`pinto.php`** — overrides opcionales (paths, allowlist, `partial_mock_comment_policy`, etc.).
 
 Listo. No hay que copiar boilerplate ni mantener una config larga del paquete — vive dentro del vendor.
 
@@ -48,19 +48,19 @@ Listo. No hay que copiar boilerplate ni mantener una config larga del paquete �
 
 | Comando | Hace |
 |---|---|
-| `vendor/bin/test-conventions check` | Reporta violaciones sin modificar archivos. Exit 1 si encuentra alguna |
-| `vendor/bin/test-conventions fix` | Aplica autofixes (`should ` → strip, `toBe(true)` → `toBeTrue()`, etc.) |
-| `vendor/bin/test-conventions list-rules` | Tabla de las 11 reglas con seccion del doc y modo (autofix/detect) |
-| `vendor/bin/test-conventions init` | Bootstrap (genera los dos archivos del cliente) |
+| `vendor/bin/pinto check` | Reporta violaciones sin modificar archivos. Exit 1 si encuentra alguna |
+| `vendor/bin/pinto fix` | Aplica autofixes (`should ` → strip, `toBe(true)` → `toBeTrue()`, etc.) |
+| `vendor/bin/pinto list-rules` | Tabla de las 11 reglas con seccion del doc y modo (autofix/detect) |
+| `vendor/bin/pinto init` | Bootstrap (genera los dos archivos del cliente) |
 
 Output ejemplo:
 
 ```
-$ vendor/bin/test-conventions check
-tests/Feature/UserTest.php:14: Perafan/test_conventions_max_description_length Description exceeds 50 chars (got 67): "..."
-tests/Unit/PostTest.php:8: Perafan/test_conventions_forbidden_matchers Use toBeTrue() instead of toBe(true)
+$ vendor/bin/pinto check
+tests/Feature/UserTest.php:14: Pinto/max_description_length Description exceeds 50 chars (got 67): "..."
+tests/Unit/PostTest.php:8: Pinto/forbidden_matchers Use toBeTrue() instead of toBe(true)
 
-1 file has autofixable violations. Run `vendor/bin/test-conventions fix` to apply.
+1 file has autofixable violations. Run `vendor/bin/pinto fix` to apply.
 Found 2 violations across 2 files.
 ```
 
@@ -70,10 +70,10 @@ Formato `file:line: rule: message` clickable en editores y terminales modernas.
 
 ```yaml
 - run: vendor/bin/pint --test
-- run: vendor/bin/test-conventions check
+- run: vendor/bin/pinto check
 ```
 
-Pint sigue manejando el preset Laravel + built-ins. `test-conventions` se encarga solo de las reglas de tests.
+Pint sigue manejando el preset Laravel + built-ins. `pinto` se encarga solo de las reglas de tests.
 
 ### Pre-commit (lefthook)
 
@@ -83,9 +83,9 @@ pre-commit:
     pint:
       glob: "*.php"
       run: vendor/bin/pint --test {staged_files}
-    test-conventions:
+    pinto:
       glob: "tests/**/*.php"
-      run: vendor/bin/test-conventions check {staged_files}
+      run: vendor/bin/pinto check {staged_files}
 ```
 
 ### Fixes automaticos disponibles
@@ -103,7 +103,7 @@ El `.php-cs-fixer.dist.php` que `init` genera delega al config del vendor, asi q
 
 ### Por que no `pint.json`
 
-Pint v1.27 no descubre custom fixers de terceros desde `pint.json`. Probado empiricamente — falla con "unknown fixers". El binario `vendor/bin/test-conventions` resuelve esto: internamente invoca PHP-CS-Fixer con la config completa registrada, asi el cliente no ve la mecanica. Si Pint upstream agrega soporte algun dia, `init` puede generar un `pint.json` en su lugar.
+Pint v1.27 no descubre custom fixers de terceros desde `pint.json`. Probado empiricamente — falla con "unknown fixers". El binario `vendor/bin/pinto` resuelve esto: internamente invoca PHP-CS-Fixer con la config completa registrada, asi el cliente no ve la mecanica. Si Pint upstream agrega soporte algun dia, `init` puede generar un `pint.json` en su lugar.
 
 ## Doc canonico
 
@@ -132,11 +132,11 @@ R10 y R12 quedan a code review humano/agente porque requieren scope tracking sob
 ## Plugin Claude Code
 
 ```
-/plugin marketplace add github:Perafan18/test-conventions
-/plugin install test-conventions
+/plugin marketplace add github:Perafan18/pinto
+/plugin install pinto
 ```
 
-El skill carga `CONVENTIONS.md` en context cuando un agente esta escribiendo tests Pest en un proyecto que tiene `perafan/test-conventions` instalado. Sugiere correr `vendor/bin/php-cs-fixer fix --dry-run` al terminar.
+El skill carga `CONVENTIONS.md` en context cuando un agente esta escribiendo tests Pest en un proyecto que tiene `perafan/pinto` instalado. Sugiere correr `vendor/bin/php-cs-fixer fix --dry-run` al terminar.
 
 ## Roadmap
 

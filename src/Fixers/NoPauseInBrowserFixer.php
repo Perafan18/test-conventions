@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace Perafan\TestConventions\Fixers;
+namespace Perafan\Pinto\Fixers;
 
 use PhpCsFixer\Fixer\ConfigurableFixerInterface;
 use PhpCsFixer\Fixer\ConfigurableFixerTrait;
@@ -16,13 +16,13 @@ use PhpCsFixer\Tokenizer\Tokens;
 use RuntimeException;
 use SplFileInfo;
 
-final class NoPauseInBrowserFixer extends AbstractTestConventionsFixer implements ConfigurableFixerInterface
+final class NoPauseInBrowserFixer extends AbstractPintoFixer implements ConfigurableFixerInterface
 {
     use ConfigurableFixerTrait;
 
     public function getName(): string
     {
-        return 'Perafan/test_conventions_no_pause_browser';
+        return 'Pinto/no_pause_browser';
     }
 
     public function getDefinition(): FixerDefinitionInterface

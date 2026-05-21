@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace Perafan\TestConventions\Fixers;
+namespace Perafan\Pinto\Fixers;
 
 use PhpCsFixer\FixerDefinition\CodeSample;
 use PhpCsFixer\FixerDefinition\FixerDefinition;
@@ -10,11 +10,11 @@ use PhpCsFixer\FixerDefinition\FixerDefinitionInterface;
 use PhpCsFixer\Tokenizer\Tokens;
 use SplFileInfo;
 
-final class NoOnlyFixer extends AbstractTestConventionsFixer
+final class NoOnlyFixer extends AbstractPintoFixer
 {
     public function getName(): string
     {
-        return 'Perafan/test_conventions_no_only';
+        return 'Pinto/no_only';
     }
 
     public function getDefinition(): FixerDefinitionInterface

@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace Perafan\TestConventions\Cli;
+namespace Perafan\Pinto\Cli;
 
 use Symfony\Component\Console\Attribute\AsCommand;
 use Symfony\Component\Console\Command\Command;
@@ -19,17 +19,17 @@ final class ListRulesCommand extends Command
     private function rules(): array
     {
         return [
-            ['R01', 'Perafan/test_conventions_it_not_test', '§2.1', 'autofix', 'Use it() instead of test() at top level.'],
-            ['R02', 'Perafan/test_conventions_max_description_length', '§2.2', 'detect', 'Description ≤ 50 chars.'],
-            ['R03', 'Perafan/test_conventions_no_should_prefix', '§2.2', 'autofix', 'No should / it tests / tests that prefix.'],
-            ['R04', 'Perafan/test_conventions_forbidden_matchers', '§4.2', 'autofix', 'No toBe(true|false|null) — use semantic matchers.'],
-            ['R05', 'Perafan/test_conventions_no_assert_true_true', '§8.3', 'detect', 'No placeholder assertTrue(true) / expect(true)->toBeTrue().'],
-            ['R06', 'Perafan/test_conventions_no_app_mocking', '§5.1', 'detect', 'No mocking App\\ — use factories or real services.'],
-            ['R07', 'Perafan/test_conventions_no_pause_browser', '§7.3', 'detect', 'No ->pause()/->wait() with fixed timeouts in Browser.'],
-            ['R08', 'Perafan/test_conventions_no_sleep', '§8.5', 'detect', 'No sleep()/usleep() in tests.'],
-            ['R09', 'Perafan/test_conventions_no_only', '§8.12', 'autofix', 'No ->only() reaching main.'],
-            ['R11', 'Perafan/test_conventions_no_absolute_paths', '§8.13', 'detect', 'No /Users/ or /home/ absolute paths.'],
-            ['§5.3', 'Perafan/test_conventions_partial_mock_comment', '§5.3', 'detect', 'partial_mock_comment_policy: forbid/require/allow.'],
+            ['R01', 'Pinto/it_not_test', '§2.1', 'autofix', 'Use it() instead of test() at top level.'],
+            ['R02', 'Pinto/max_description_length', '§2.2', 'detect', 'Description ≤ 50 chars.'],
+            ['R03', 'Pinto/no_should_prefix', '§2.2', 'autofix', 'No should / it tests / tests that prefix.'],
+            ['R04', 'Pinto/forbidden_matchers', '§4.2', 'autofix', 'No toBe(true|false|null) — use semantic matchers.'],
+            ['R05', 'Pinto/no_assert_true_true', '§8.3', 'detect', 'No placeholder assertTrue(true) / expect(true)->toBeTrue().'],
+            ['R06', 'Pinto/no_app_mocking', '§5.1', 'detect', 'No mocking App\\ — use factories or real services.'],
+            ['R07', 'Pinto/no_pause_browser', '§7.3', 'detect', 'No ->pause()/->wait() with fixed timeouts in Browser.'],
+            ['R08', 'Pinto/no_sleep', '§8.5', 'detect', 'No sleep()/usleep() in tests.'],
+            ['R09', 'Pinto/no_only', '§8.12', 'autofix', 'No ->only() reaching main.'],
+            ['R11', 'Pinto/no_absolute_paths', '§8.13', 'detect', 'No /Users/ or /home/ absolute paths.'],
+            ['§5.3', 'Pinto/partial_mock_comment', '§5.3', 'detect', 'partial_mock_comment_policy: forbid/require/allow.'],
         ];
     }
 

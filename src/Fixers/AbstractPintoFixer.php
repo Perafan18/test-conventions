@@ -2,12 +2,12 @@
 
 declare(strict_types=1);
 
-namespace Perafan\TestConventions\Fixers;
+namespace Perafan\Pinto\Fixers;
 
 use PhpCsFixer\AbstractFixer;
 use PhpCsFixer\Tokenizer\Tokens;
 
-abstract class AbstractTestConventionsFixer extends AbstractFixer
+abstract class AbstractPintoFixer extends AbstractFixer
 {
     public function getPriority(): int
     {
@@ -39,8 +39,8 @@ abstract class AbstractTestConventionsFixer extends AbstractFixer
 
     protected function report(\SplFileInfo $file, int $line, string $message): void
     {
-        if (\Perafan\TestConventions\Cli\ViolationCollector::path() !== null) {
-            \Perafan\TestConventions\Cli\ViolationCollector::add(
+        if (\Perafan\Pinto\Cli\ViolationCollector::path() !== null) {
+            \Perafan\Pinto\Cli\ViolationCollector::add(
                 $file->getPathname(),
                 $line,
                 $this->getName(),

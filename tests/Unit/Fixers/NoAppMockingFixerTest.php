@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-use Perafan\TestConventions\Fixers\NoAppMockingFixer;
+use Perafan\Pinto\Fixers\NoAppMockingFixer;
 
 beforeEach(function () {
     $this->fixer = new NoAppMockingFixer();

@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace Perafan\TestConventions\Tokens;
+namespace Perafan\Pinto\Tokens;
 
 final readonly class PestCall
 {

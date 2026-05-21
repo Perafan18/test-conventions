@@ -2,9 +2,9 @@
 
 declare(strict_types=1);
 
-namespace Perafan\TestConventions\Fixers;
+namespace Perafan\Pinto\Fixers;
 
-use Perafan\TestConventions\Tokens\NamespaceResolver;
+use Perafan\Pinto\Tokens\NamespaceResolver;
 use PhpCsFixer\Fixer\ConfigurableFixerInterface;
 use PhpCsFixer\Fixer\ConfigurableFixerTrait;
 use PhpCsFixer\FixerConfiguration\FixerConfigurationResolver;
@@ -17,7 +17,7 @@ use PhpCsFixer\Tokenizer\Tokens;
 use RuntimeException;
 use SplFileInfo;
 
-final class NoAppMockingFixer extends AbstractTestConventionsFixer implements ConfigurableFixerInterface
+final class NoAppMockingFixer extends AbstractPintoFixer implements ConfigurableFixerInterface
 {
     use ConfigurableFixerTrait;
 
@@ -25,7 +25,7 @@ final class NoAppMockingFixer extends AbstractTestConventionsFixer implements Co
 
     public function getName(): string
     {
-        return 'Perafan/test_conventions_no_app_mocking';
+        return 'Pinto/no_app_mocking';
     }
 
     public function getDefinition(): FixerDefinitionInterface

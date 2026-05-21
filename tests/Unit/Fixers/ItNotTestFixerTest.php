@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-use Perafan\TestConventions\Fixers\ItNotTestFixer;
+use Perafan\Pinto\Fixers\ItNotTestFixer;
 
 beforeEach(function () {
     $this->fixer = new ItNotTestFixer();

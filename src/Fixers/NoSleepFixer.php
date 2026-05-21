@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace Perafan\TestConventions\Fixers;
+namespace Perafan\Pinto\Fixers;
 
 use PhpCsFixer\Fixer\ConfigurableFixerInterface;
 use PhpCsFixer\Fixer\ConfigurableFixerTrait;
@@ -15,13 +15,13 @@ use PhpCsFixer\FixerDefinition\FixerDefinitionInterface;
 use PhpCsFixer\Tokenizer\Tokens;
 use SplFileInfo;
 
-final class NoSleepFixer extends AbstractTestConventionsFixer implements ConfigurableFixerInterface
+final class NoSleepFixer extends AbstractPintoFixer implements ConfigurableFixerInterface
 {
     use ConfigurableFixerTrait;
 
     public function getName(): string
     {
-        return 'Perafan/test_conventions_no_sleep';
+        return 'Pinto/no_sleep';
     }
 
     public function getDefinition(): FixerDefinitionInterface

@@ -2,9 +2,9 @@
 
 declare(strict_types=1);
 
-namespace Perafan\TestConventions\Fixers;
+namespace Perafan\Pinto\Fixers;
 
-use Perafan\TestConventions\Tokens\PestCallFinder;
+use Perafan\Pinto\Tokens\PestCallFinder;
 use PhpCsFixer\Fixer\ConfigurableFixerInterface;
 use PhpCsFixer\Fixer\ConfigurableFixerTrait;
 use PhpCsFixer\FixerConfiguration\FixerConfigurationResolver;
@@ -17,13 +17,13 @@ use PhpCsFixer\Tokenizer\Token;
 use PhpCsFixer\Tokenizer\Tokens;
 use SplFileInfo;
 
-final class NoShouldPrefixFixer extends AbstractTestConventionsFixer implements ConfigurableFixerInterface
+final class NoShouldPrefixFixer extends AbstractPintoFixer implements ConfigurableFixerInterface
 {
     use ConfigurableFixerTrait;
 
     public function getName(): string
     {
-        return 'Perafan/test_conventions_no_should_prefix';
+        return 'Pinto/no_should_prefix';
     }
 
     public function getDefinition(): FixerDefinitionInterface

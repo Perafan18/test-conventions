@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace Perafan\TestConventions\Fixers;
+namespace Perafan\Pinto\Fixers;
 
 use PhpCsFixer\Fixer\ConfigurableFixerInterface;
 use PhpCsFixer\Fixer\ConfigurableFixerTrait;
@@ -16,13 +16,13 @@ use PhpCsFixer\Tokenizer\Token;
 use PhpCsFixer\Tokenizer\Tokens;
 use SplFileInfo;
 
-final class ItNotTestFixer extends AbstractTestConventionsFixer implements ConfigurableFixerInterface
+final class ItNotTestFixer extends AbstractPintoFixer implements ConfigurableFixerInterface
 {
     use ConfigurableFixerTrait;
 
     public function getName(): string
     {
-        return 'Perafan/test_conventions_it_not_test';
+        return 'Pinto/it_not_test';
     }
 
     public function getDefinition(): FixerDefinitionInterface
