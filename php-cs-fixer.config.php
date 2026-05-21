@@ -2,6 +2,11 @@
 
 declare(strict_types=1);
 
+$composerAutoload = __DIR__.'/../../autoload.php';
+if (! class_exists(\Perafan\TestConventions\Fixers\MaxDescriptionLengthFixer::class, false) && file_exists($composerAutoload)) {
+    require_once $composerAutoload;
+}
+
 use PhpCsFixer\Config;
 use PhpCsFixer\Finder;
 use Perafan\TestConventions\Fixers\ForbiddenMatchersFixer;
